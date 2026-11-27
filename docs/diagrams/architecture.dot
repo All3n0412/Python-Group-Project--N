@@ -1,0 +1,44 @@
+digraph A {
+  rankdir=TB; nodesep=0.3; ranksep=0.42; newrank=true;
+  node [shape=box style="rounded,filled" fontname="Helvetica" fontsize=10 color="#305496" fillcolor="#EEF3FB"];
+  edge [fontname="Helvetica" fontsize=8 color="#555555"];
+
+  subgraph cluster_in { label="Data in"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=10;
+    form  [label="Google Form\n(players sign up)" fillcolor="#FFF2CC"];
+    sheet [label="Responses file (.xlsx / .csv)\n+ Organizer level + Fixed team" shape=folder fillcolor="#FFF2CC"];
+  }
+  subgraph cluster_ui { label="Interface layer"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=10;
+    gui [label="gui.py — tkinter window" fillcolor="#DDEBF7"];
+    cli [label="cli.py — command line + file picker" fillcolor="#DDEBF7"];
+  }
+  subgraph cluster_core { label="Core modules (Python package badminton_teams)"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=10;
+    pipe [label="pipeline.py\nform_teams_from_file() · recheck_file()" fillcolor="#E2EFDA"];
+    load [label="loader.py\nread + clean"];
+    plan [label="planner.py\nteam sizes +\nfeasibility"];
+    fm   [label="formation.py\nskill-gradient\nengine"];
+    chk  [label="checks.py\nsummary +\nPASS/WARN/FAIL"];
+    exp  [label="exporter.py\nwrite / read\nExcel"];
+    cfg  [label="config.py — rules, column keywords (used by all modules)" shape=note fillcolor="#F2F2F2"];
+  }
+  subgraph cluster_out { label="Data out"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=10;
+    xlsx [label="teams.xlsx (saved next to the input file)\nTeams · Summary · Checks · Input issues" shape=folder fillcolor="#E2EFDA"];
+  }
+  tests [label="tests/ (pytest)\n15 automated tests" shape=component fillcolor="#FCE4D6"];
+
+  { rank=same; gui; cli; }
+  { rank=same; load; plan; fm; chk; exp; }
+
+  form -> sheet [label=" download"];
+  sheet -> gui [label=" file path"]; sheet -> cli [label=" file path"];
+  gui -> pipe [label=" path, team size"]; cli -> pipe [label=" path, options"];
+  pipe -> gui [label=" Result object\n (summary, checks, overall)" color="#2E7D32" fontcolor="#2E7D32" style=bold];
+  pipe -> load [label=" ① path"];
+  load -> plan [label="② clean\nDataFrame"];
+  plan -> fm [label="③ sizes\n[7,7,6,6]"];
+  fm -> chk [label="④ DataFrame\n+ team"];
+  chk -> exp [label="⑤ summary\n+ checks"];
+  exp -> xlsx [label=" ⑥ save"];
+  xlsx -> pipe [label=" re-check: edited\n Teams sheet" style=dashed constraint=false];
+  load -> cfg [style=invis];
+  tests -> pipe [style=dotted label=" calls" constraint=false];
+}

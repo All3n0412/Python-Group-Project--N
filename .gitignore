@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# outputs and real (personal) data are never committed
+teams.xlsx
+output/
+data/real/

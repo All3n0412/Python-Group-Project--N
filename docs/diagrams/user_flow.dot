@@ -1,0 +1,25 @@
+digraph U {
+  rankdir=TB; nodesep=0.3; ranksep=0.3;
+  node [shape=box style="rounded,filled" fontname="Helvetica" fontsize=10 color="#305496" fillcolor="#EEF3FB"];
+  edge [fontname="Helvetica" fontsize=8 color="#555555"];
+  s0 [label="Players fill in the Google Form" fillcolor="#FFF2CC"];
+  s1 [label="Organizer downloads responses (.xlsx)\n(optional) adds Organizer level / Fixed team" fillcolor="#FFF2CC"];
+  s2 [label="Double-click 'Start Team Formation'\n→ main window opens  [Screen A]" fillcolor="#DDEBF7"];
+  s3 [label="Click 'Choose responses file…'\n→ file picker  [Screen B]" fillcolor="#DDEBF7"];
+  s4 [label="Set players per team (default 6)\n→ click 'Form teams'" fillcolor="#DDEBF7"];
+  d1 [label="Input OK?" shape=diamond fillcolor="#FFF2CC"];
+  e1 [label="Error dialog explains the problem\n(missing data / too few women)  [Screen D]" fillcolor="#FCE4D6"];
+  s5 [label="Results shown in window:\nteam summary + PASS/WARN/FAIL  [Screen C]" fillcolor="#E2EFDA"];
+  s6 [label="Click 'Open Excel file'\n→ teams.xlsx (4 sheets)  [Screen E]" fillcolor="#E2EFDA"];
+  d2 [label="Happy with\nthe teams?" shape=diamond fillcolor="#FFF2CC"];
+  s7 [label="Edit 'Team' column in Excel, save\n→ 'Re-check edited file…'" fillcolor="#FCE4D6"];
+  s8 [label="Share the team list with players" fillcolor="#E2EFDA"];
+  ch [label="Dropout / late sign-up" shape=note fillcolor="#F2F2F2"];
+  s0 -> s1 -> s2 -> s3 -> s4 -> d1;
+  d1 -> e1 [label="no"]; e1 -> s1 [label="fix the sheet" constraint=false];
+  d1 -> s5 [label="yes"]; s5 -> s6 -> d2;
+  d2 -> s8 [label="yes"];
+  d2 -> s7 [label="no (Use case 2)"]; s7 -> s5 [label="updated checks" constraint=false];
+  ch -> s1 [style=dashed label="update, run again"];
+  subgraph cluster_u1 { label="Use case 1: form teams"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=9; s2; s3; s4; d1; e1; s5; s6; }
+}
