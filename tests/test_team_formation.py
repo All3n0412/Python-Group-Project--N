@@ -126,3 +126,14 @@ def test_wrong_file_type_is_rejected(tmp_path):
     path.write_text("hello")
     with pytest.raises(InputDataError, match="xlsx or .csv"):
         pipeline.form_teams_from_file(path)
+
+
+# ---------- TC12: output file locked (open in Excel on Windows) ----------
+def test_locked_output_file_gives_clear_message(tmp_path, monkeypatch):
+    from badminton_teams import exporter
+
+    def locked(*args, **kwargs):
+        raise PermissionError("file is open")
+    monkeypatch.setattr(exporter, "export_excel", locked)
+    with pytest.raises(InputDataError, match="open in Excel"):
+        pipeline.form_teams_from_file(SAMPLE, tmp_path / "teams.xlsx")

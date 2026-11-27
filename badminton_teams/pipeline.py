@@ -21,6 +21,16 @@ class Result:
         return checks.overall_result(self.checks)
 
 
+def _save(df, summary, table, issues, path):
+    """Write the Excel file; explain the most common Windows problem in plain words."""
+    try:
+        exporter.export_excel(df, summary, table, issues, path)
+    except PermissionError:
+        raise loader.InputDataError(
+            f"Cannot save {os.path.basename(str(path))}: it is probably open in Excel. "
+            "Close it and try again.") from None
+
+
 def default_output_path(input_path):
     """Save teams.xlsx next to the input file."""
     return os.path.join(os.path.dirname(os.path.abspath(input_path)), "teams.xlsx")
@@ -41,7 +51,7 @@ def form_teams_from_file(input_path, output_path=None, team_size=DEFAULT_TEAM_SI
     summary = checks.summarize(df)
     table = checks.check_rules(df, summary, max_men)
     output_path = output_path or default_output_path(input_path)
-    exporter.export_excel(df, summary, table, issues, output_path)
+    _save(df, summary, table, issues, output_path)
     return Result(df, summary, table, output_path, issues)
 
 
@@ -50,5 +60,5 @@ def recheck_file(teams_path, max_men=None):
     df = exporter.read_teams_file(teams_path)
     summary = checks.summarize(df)
     table = checks.check_rules(df, summary, max_men)
-    exporter.export_excel(df, summary, table, [], teams_path)
+    _save(df, summary, table, [], teams_path)
     return Result(df, summary, table, teams_path)

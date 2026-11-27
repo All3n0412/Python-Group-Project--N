@@ -4,6 +4,8 @@ Turns Google Form sign-ups into **skill-gradient badminton teams** (Team 1 stron
 
 Built for the NTU Economics department's entry to the College of Social Sciences Badminton Cup. Python Programming Foundation final project, Fall 2026.
 
+**Group members: start with [HOW_TO_USE.md](HOW_TO_USE.md).** It covers getting the code, running it, what each file is for, and the Git workflow.
+
 ## Features
 
 | ID | Feature | What it does |
@@ -20,6 +22,8 @@ Built for the NTU Economics department's entry to the College of Social Sciences
 ## Install
 
 ```
+git clone https://github.com/All3n0412/Python-Group-Project--N.git
+cd Python-Group-Project--N
 pip install -r requirements.txt
 ```
 
@@ -66,7 +70,7 @@ badminton_teams/      the program (one module per responsibility)
   exporter.py         write / read the Excel file
   pipeline.py         connects the modules (used by the CLI and the window)
   cli.py, gui.py      command line and tkinter window
-tests/                pytest test cases
+tests/                pytest test cases (16)
 tools/                sample-data generators and the 11/22 comparison script
 data/sample/          fake / anonymized data only
 docs/                 diagrams and screenshots
