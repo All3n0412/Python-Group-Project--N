@@ -30,6 +30,18 @@ def load_responses(path):
     return df.rename(columns=rename)
 
 
+def _gender(answer):
+    """'Male 男', 'female', '女'... -> M / F. Checks 'female' first ('female' contains 'male')."""
+    text = str(answer).strip().lower()
+    if text in GENDER_MAP:
+        return GENDER_MAP[text]
+    if "female" in text or "女" in text:
+        return "F"
+    if "male" in text or "男" in text:
+        return "M"
+    return None
+
+
 def _attitude(answer):
     """Turn a free-text attitude answer into win / flex / fun."""
     text = str(answer).lower()
@@ -60,7 +72,7 @@ def clean(df):
         if len(df) < before:
             issues.append(f"Removed {before - len(df)} duplicate submission(s); kept the latest.")
 
-    df["gender"] = df["gender"].astype(str).str.strip().str.lower().map(GENDER_MAP)
+    df["gender"] = df["gender"].map(_gender)
     df["attitude"] = df["attitude"].map(_attitude) if "attitude" in df.columns else "flex"
 
     # Skill level: the organizer's rating wins, otherwise the self-rating

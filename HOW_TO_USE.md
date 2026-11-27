@@ -3,6 +3,7 @@
 This guide covers getting the code, running the program, what each file is for, and how to share your changes. You don't need Git experience.
 
 Repository: https://github.com/All3n0412/Python-Group-Project--N
+Sign-up form (players fill this in): https://forms.gle/MzTkN82yTcJC9o7UA
 
 ---
 
@@ -32,7 +33,17 @@ pip install -r requirements.txt
 
 This installs pandas, openpyxl and pytest.
 
-## 3. Run the program
+## 3. Get real sign-ups from the Google Form
+
+1. Open the form's **Responses** tab → **Link to Sheets** (once).
+2. In the sheet: **File → Download → Microsoft Excel (.xlsx)**.
+3. (Optional) Add two columns titled exactly `Organizer level` (1–5) and `Fixed team` (team number).
+4. Keep this file **outside** the repository, or in `data/real/`, which Git ignores. It contains real names and student IDs.
+5. Choose it in the window (next step).
+
+Don't rename the form questions: the program finds each column by keywords such as "Gender" and "Self-rated level".
+
+## 4. Run the program
 
 | What you want | How |
 |---|---|
@@ -48,7 +59,7 @@ The result `teams.xlsx` is saved **in the same folder as the file you chose**, w
 - **Checks:** every rule marked PASS / WARN / FAIL.
 - **Input issues:** problems found in the form data.
 
-## 4. What every file is
+## 5. What every file is
 
 ### Main folder
 
@@ -82,7 +93,7 @@ Data flows through these modules in this order: loader → planner → formation
 
 | File | What it is |
 |---|---|
-| `test_team_formation.py` | 16 automated test cases (TC1–TC12 in the HW5 report) |
+| `test_team_formation.py` | 17 automated tests (TC1–TC13 in the HW5 report); TC13 uses the exact format of our Google Form |
 | `conftest.py` | Helpers that build small fake form files for the tests |
 
 ### `tools/`: helper scripts, not part of the program
@@ -108,7 +119,7 @@ To redraw a diagram after editing a `.dot` file, install Graphviz and run:
 dot -Tpng -Gdpi=170 architecture.dot -o architecture.png
 ```
 
-## 5. Sharing your changes (Git workflow)
+## 6. Sharing your changes (Git workflow)
 
 Every time you work on the code:
 
@@ -123,12 +134,12 @@ git push                      # 4. upload
 
 Rules:
 - **Pull before you start.** This avoids most conflicts.
-- **Stick to your own module** (see the roles in HW5 report §5.4). Two people editing the same file at the same time causes conflicts.
+- **Stick to your own module** (see the roles in HW5 report Section 5.4). Two people editing the same file at the same time causes conflicts.
 - **Never commit real sign-up data** (real names, student IDs). Keep it in a `data/real/` folder, which Git ignores.
 - **If `git push` is rejected:** run `git pull`, then `git push` again.
 - **If `git pull` reports a conflict:** don't panic. Open the file, keep the right lines, delete the `<<<<<<<`, `=======` and `>>>>>>>` markers, then `git add .`, `git commit` and `git push`. If unsure, ask Allen before forcing anything.
 
-## 6. Common problems
+## 7. Common problems
 
 | Message | Fix |
 |---|---|

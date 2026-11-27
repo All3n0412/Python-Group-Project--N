@@ -23,7 +23,7 @@ digraph A {
   subgraph cluster_out { label="Data out"; style=dashed; color="#9AA5B1"; fontname="Helvetica"; fontsize=10;
     xlsx [label="teams.xlsx (saved next to the input file)\nTeams · Summary · Checks · Input issues" shape=folder fillcolor="#E2EFDA"];
   }
-  tests [label="tests/ (pytest)\n16 automated tests" shape=component fillcolor="#FCE4D6"];
+  tests [label="tests/ (pytest)\n17 automated tests" shape=component fillcolor="#FCE4D6"];
 
   { rank=same; gui; cli; }
   { rank=same; load; plan; fm; chk; exp; }

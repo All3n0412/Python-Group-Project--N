@@ -4,6 +4,8 @@ Turns Google Form sign-ups into **skill-gradient badminton teams** (Team 1 stron
 
 Built for the NTU Economics department's entry to the College of Social Sciences Badminton Cup. Python Programming Foundation final project, Fall 2026.
 
+**Sign-up form:** https://forms.gle/MzTkN82yTcJC9o7UA
+
 **Group members: start with [HOW_TO_USE.md](HOW_TO_USE.md).** It covers getting the code, running it, what each file is for, and the Git workflow.
 
 ## Features
@@ -53,7 +55,7 @@ Download the form responses from Google Sheets (*File → Download → .xlsx*). 
 | Needed | Keyword in the question title |
 |---|---|
 | ✔ | `Name` / `姓名` |
-| ✔ | `Gender` / `性別` (Male / Female) |
+| ✔ | `Gender` / `性別` (Male / Female / 男 / 女, or both, e.g. "Male 男") |
 | ✔ | `Self-rated level` / `自評` (1–5), or `Organizer level` / `主辦評分` |
 | optional | `Timestamp`, `Student ID`, `Attitude` (Play to win / Flexible / For fun), `1st choice`, `2nd choice` |
 | optional | `Fixed team` / `指定隊伍` (lock a player to a team number) |
@@ -70,7 +72,7 @@ badminton_teams/      the program (one module per responsibility)
   exporter.py         write / read the Excel file
   pipeline.py         connects the modules (used by the CLI and the window)
   cli.py, gui.py      command line and tkinter window
-tests/                pytest test cases (16)
+tests/                pytest test cases (17)
 tools/                sample-data generators and the 11/22 comparison script
 data/sample/          fake / anonymized data only
 docs/                 diagrams and screenshots

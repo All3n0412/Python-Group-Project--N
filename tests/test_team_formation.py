@@ -137,3 +137,29 @@ def test_locked_output_file_gives_clear_message(tmp_path, monkeypatch):
     monkeypatch.setattr(exporter, "export_excel", locked)
     with pytest.raises(InputDataError, match="open in Excel"):
         pipeline.form_teams_from_file(SAMPLE, tmp_path / "teams.xlsx")
+
+
+# ---------- TC13: our real Google Form export (exact question titles and options) ----------
+def test_our_google_form_export_is_read_correctly(write_xlsx, tmp_path):
+    """Column titles and answer options copied from the live form (forms.gle/MzTkN82yTcJC9o7UA)."""
+    genders = ["Male 男"] * 8 + ["Female 女"] * 4
+    attitudes = ["Play to win 劍指冠軍", "Flexible 都可以", "For fun 歡樂參加"] * 4
+    df = pd.DataFrame({
+        "Timestamp": pd.date_range("2026-11-28", periods=12, freq="h"),
+        "Email Address": [f"p{i}@ntu.edu.tw" for i in range(12)],
+        "Name 姓名": [f"P{i:02d}" for i in range(12)],
+        "Student ID 學號": [f"B14{i:06d}" for i in range(12)],
+        "Gender 性別": genders,
+        "Department and year 系級": ["Econ 2"] * 12,
+        "Self-rated level 自評程度": [5, 4, 4, 3, 3, 3, 2, 2, 5, 3, 2, 1],
+        "Competition experience 比賽經驗": ["None 無"] * 12,
+        "Attitude 參賽態度": attitudes,
+        "Preferred event (1st choice) 第一志願項目": ["Men's doubles 男雙"] * 12,
+        "Preferred event (2nd choice) 第二志願項目": ["Mixed doubles 混雙"] * 12,
+        "Notes for the organizer 備註": [""] * 12,
+    })
+    result = pipeline.form_teams_from_file(write_xlsx(df), tmp_path / "t.xlsx")
+    assert set(result.players["gender"]) == {"M", "F"}
+    assert result.summary["Women"].tolist() == [2, 2]
+    assert set(result.players["attitude"]) == {"win", "flex", "fun"}
+    assert result.overall == "PASS"
